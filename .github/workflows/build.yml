@@ -1,0 +1,36 @@
+# Em pull request para a develop: só compila e valida, para pegar erros antes do merge.
+# Quando algo entra na develop (merge de branch de feature, por exemplo): compila, valida
+# e deixa o arquivo pronto para colar no Salesforce em "Artifacts", na página da execução.
+name: build
+
+on:
+  pull_request:
+    branches: [develop]
+  push:
+    branches: [develop]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      # Acusa variável não declarada, como um helper usado sem import.
+      - run: npx --yes eslint@9 src
+
+      # O check já roda o build e valida a estrutura do sitemap.
+      - run: npm run check
+
+      - if: github.event_name == 'push'
+        uses: actions/upload-artifact@v4
+        with:
+          name: sitemap
+          path: dist/sitemap.js
+          if-no-files-found: error
