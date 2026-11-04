@@ -23,7 +23,8 @@ src/
   page-type-default.js   page type padrão
   page-types/            um arquivo por page type, entram sozinhos no bundle
   listeners/             listeners globais, um arquivo por responsabilidade, entram sozinhos
-  utils/                 helpers importados pelos módulos (dom, catálogo, validação)
+  runtime/               o que roda ao iniciar, chamado em index.js (SPA, dataLayer, guarda do sendEvent)
+  utils/                 helpers importados pelos módulos (produto, carrinho, identidade, validação)
 extension/               extensão do Chrome pro modo dev
 ```
 
@@ -56,10 +57,6 @@ Mudou `sitemap.config.js`? Reinicie o `npm run dev`. Mudou a `port`? Ajuste tamb
 - **CSP do site:** se o `script-src` do site não permitir `http://localhost:5577`, o Chrome bloqueia o script redirecionado (aparece no console). Nesse caso, use as Local Overrides do DevTools apontando pro `dist/sitemap.js`.
 - **Sitemap embutido no beacon:** se a URL configurada entrega o SDK e o sitemap juntos no mesmo arquivo, trocá-la pelo bundle tira o SDK da página. A troca funciona quando o sitemap é um arquivo próprio.
 
-## Migrando o sitemap atual
+## Compilar pelo GitHub
 
-1. Comece colando o sitemap inteiro, do jeito que está hoje, em `src/` (objeto `global` em `global.js`, cada item de `pageTypes` em um arquivo de `page-types/`, mantendo a ordem original pelos prefixos).
-2. Rode `npm run build` e compare `dist/sitemap.js` com o original no site via `npm run dev` antes de refatorar.
-3. Depois disso, extraia o que se repete pra `utils/` e os listeners pra `listeners/`, um bloco por vez.
-
-Os módulos de exemplo que vêm no projeto (home, categoria, produto, carrinho, add-to-cart) são só um modelo e devem ser trocados pelos do site.
+Não é preciso ter Node na máquina. Em pull request para a `develop`, o GitHub valida o código. Depois do merge, ele também gera o arquivo: abra a execução na aba **Actions** e baixe `sitemap` em **Artifacts**. O `sitemap.js` dentro do `.zip` é o que vai para o Salesforce.

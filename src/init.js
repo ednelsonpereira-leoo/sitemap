@@ -1,4 +1,11 @@
-// Opções do SalesforceInteractions.init(). Ajuste o cookieDomain pro domínio do site.
+// Opções do SalesforceInteractions.init().
 export default {
-  cookieDomain: 'grancursosonline.com.br',
+  cookieDomain: "grancursosonline.com.br",
+  consents: [
+    {
+      purpose: SalesforceInteractions.mcis.ConsentPurpose.Personalization,
+      provider: "GranCursos",
+      status: SalesforceInteractions.ConsentStatus.OptIn,
+    },
+  ],
 };
